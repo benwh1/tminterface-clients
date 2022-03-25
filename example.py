@@ -2,7 +2,7 @@ import sys
 from tminterface.client import run_client
 from clients.press_forward import PressForwardClient
 
-n = sys.argv[1]
+n = int(sys.argv[1])
 
 run_client(
     PressForwardClient(
