@@ -87,7 +87,7 @@ class PressForwardClient(Client):
         iface.set_simulation_time_limit(self.max_iter_length)
 
     def on_simulation_step(self, iface: TMInterface, t: int):
-        if t == self.iter_start_time - 50:
+        if t == self.iter_start_time - 20:
             self.start_state = iface.get_simulation_state()
 
         if t == self.max_iter_length:
