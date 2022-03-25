@@ -60,6 +60,16 @@ class LowInputClient(Client):
         else:
             self.goals = []
 
+        if "restarts" in kwargs:
+            self.restarts = kwargs["restarts"]
+        else:
+            self.restarts = []
+
+        if "check_frequency" in kwargs:
+            self.check_frequency = kwargs["check_frequency"]
+        else:
+            self.check_frequency = 100
+
         if "client_name" in kwargs:
             self.client_name = kwargs["client_name"]
         else:
@@ -120,14 +130,19 @@ class LowInputClient(Client):
         if t == self.max_iter_length:
             self.next_iter(iface)
 
-        if len(self.goals) > 0 and t % 200 == 0:
+        if (len(self.goals) > 0 or len(self.restarts) > 0) and t % self.check_frequency == 0:
             state = iface.get_simulation_state()
+
             for (i, g) in enumerate(self.goals):
                 if g(state) and not self.goals[i]:
                     self.log(f"[{self.client_name}] Reached goal {i+1} at time = {t}")
                     self.goals[i] = True
                     self.max_iter_length += self.extra_time
                     iface.set_simulation_time_limit(self.max_iter_length)
+
+            for r in self.restarts:
+                if r(state):
+                    self.next_iter(iface)
 
     def on_checkpoint_count_changed(self, iface: TMInterface, current: int, target: int):
         iface.prevent_simulation_finish()
