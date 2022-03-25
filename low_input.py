@@ -35,12 +35,15 @@ class LowInputClient(Client):
         else:
             self.max_length = 120000
 
-        # Arithmetic progression of inputs. (a,b) searches every a'th input starting from b
-        # e.g. use (1,0) for all possible inputs, or (2,0) and (2,1) for all inputs across two clients.
-        if "ap" in kwargs:
-            self.ap = kwargs["ap"]
+        if "num_clients" in kwargs:
+            self.num_clients = kwargs["num_clients"]
         else:
-            self.ap = (1,0)
+            self.num_clients = 1
+
+        if "client_num" in kwargs:
+            self.client_num = kwargs["client_num"]
+        else:
+            self.client_num = 0
 
         if "random" in kwargs:
             self.random = kwargs["random"]
@@ -105,7 +108,7 @@ class LowInputClient(Client):
         self.iter = self.start_iter
         self.best_time = 10**10
         self.doing_start = True
-        self.max_iter_length = self.max_length + 10 * (self.ap[0] * self.iter + self.ap[1])
+        self.max_iter_length = self.max_length + 10 * (self.num_clients * self.iter + self.client_num)
 
         iface.set_simulation_time_limit(self.max_iter_length)
 
@@ -143,7 +146,7 @@ class LowInputClient(Client):
             steer = [random.randrange(i["steer"].start, i["steer"].stop, i["steer"].step) for i in self.inputs]
             time = [random.randrange(i["time"].start, i["time"].stop, i["time"].step) for i in self.inputs]
         else:
-            for i in range(self.ap[0]-1):
+            for i in range(self.num_clients-1):
                 next(self.input_iter)
             next_seq = list(_flatten(next(self.input_iter)))
             steer = next_seq[0::2]
@@ -159,7 +162,7 @@ class LowInputClient(Client):
 
     def next_iter(self, iface: TMInterface):
         self.iter += 1
-        self.max_iter_length = self.max_length + 10 * (self.ap[0] * self.iter + self.ap[1])
+        self.max_iter_length = self.max_length + 10 * (self.num_clients * self.iter + self.client_num)
         self.goals_reached = [False] * len(self.goals)
 
         self.next_input_sequence(iface)

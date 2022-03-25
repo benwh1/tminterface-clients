@@ -17,12 +17,15 @@ class PressForwardClient(Client):
         else:
             self.max_length = 120000
 
-        # Arithmetic progression of inputs. (a,b) searches 10(an+b) ms
-        # e.g. use (1,0) for all possible inputs, or (2,0) and (2,1) in two clients.
-        if "ap" in kwargs:
-            self.ap = kwargs["ap"]
+        if "num_clients" in kwargs:
+            self.num_clients = kwargs["num_clients"]
         else:
-            self.ap = (1, 0)
+            self.num_clients = 1
+
+        if "client_num" in kwargs:
+            self.client_num = kwargs["client_num"]
+        else:
+            self.client_num = 0
 
         if "extra_time" in kwargs:
             self.extra_time = kwargs["extra_time"]
@@ -79,7 +82,7 @@ class PressForwardClient(Client):
         self.iter = 0
         self.goals_achieved = [False] * len(self.goals)
         self.best_time = 10**10
-        self.iter_start_time = self.start_time + 10 * (self.ap[0] * self.iter + self.ap[1])
+        self.iter_start_time = self.start_time + 10 * (self.num_clients * self.iter + self.client_num)
         self.max_iter_length = self.max_length + self.iter_start_time
         iface.set_simulation_time_limit(self.max_iter_length)
 
@@ -127,7 +130,7 @@ class PressForwardClient(Client):
 
     def next_iter(self, iface: TMInterface):
         self.iter += 1
-        self.iter_start_time = self.start_time + 10 * (self.ap[0] * self.iter + self.ap[1])
+        self.iter_start_time = self.start_time + 10 * (self.num_clients * self.iter + self.client_num)
         self.max_iter_length = self.max_length + self.iter_start_time
         self.goals_reached = [False] * len(self.goals)
 
