@@ -104,11 +104,11 @@ class LowInputClient(Client):
                 next(self.input_iter)
 
         self.initial_events = events
-        self.goals_achieved = [False] * len(self.goals)
         self.iter = self.start_iter
+        self.goals_achieved = [False] * len(self.goals)
         self.best_time = 10**10
+        self.max_iter_length = self.max_length
         self.doing_start = True
-        self.max_iter_length = self.max_length + 10 * (self.num_clients * self.iter + self.client_num)
 
         iface.set_simulation_time_limit(self.max_iter_length)
 
@@ -117,7 +117,7 @@ class LowInputClient(Client):
             self.start_state = iface.get_simulation_state()
             self.doing_start = False
 
-        if t == self.max_len:
+        if t == self.max_iter_length:
             self.next_iter(iface)
 
         if len(self.goals) > 0 and t % 200 == 0:
@@ -162,7 +162,7 @@ class LowInputClient(Client):
 
     def next_iter(self, iface: TMInterface):
         self.iter += 1
-        self.max_iter_length = self.max_length + 10 * (self.num_clients * self.iter + self.client_num)
+        self.max_iter_length = self.max_length
         self.goals_reached = [False] * len(self.goals)
 
         self.next_input_sequence(iface)
