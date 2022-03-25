@@ -55,7 +55,7 @@ class PressForwardClient(Client):
         logger = logging.getLogger(self.client_name)
         
         file_handler = logging.FileHandler(filename=f"{self.client_name}.txt")
-        file_formatter = logging.Formatter("[%(levelname)s][%(asctime)s][%(filename)s, %(funcName)s, %(lineno)d] %(message)s")
+        file_formatter = logging.Formatter("[%(levelname)s][%(asctime)s][%(filename)s, %(funcName)s, %(lineno)d][{self.client_name}] %(message)s")
         file_handler.setFormatter(file_formatter)
         
         stdout_handler = logging.StreamHandler(sys.stdout)
@@ -70,7 +70,7 @@ class PressForwardClient(Client):
         self.log = self.logger.info
 
     def on_registered(self, iface: TMInterface) -> None:
-        self.log(f"[{self.client_name}] Connected to {iface.server_name}")
+        self.log(f"Connected to {iface.server_name}")
 
     def on_simulation_begin(self, iface: TMInterface):
         iface.remove_state_validation()
@@ -98,7 +98,7 @@ class PressForwardClient(Client):
 
             for (i, g) in enumerate(self.goals):
                 if g(state) and not self.goals[i]:
-                    self.log(f"[{self.client_name}] Reached goal {i+1} at time = {t}")
+                    self.log(f"Reached goal {i+1} at time = {t}")
                     self.goals[i] = True
                     self.max_iter_length += self.extra_time 
                     iface.set_simulation_time_limit(self.max_iter_length)
@@ -111,12 +111,12 @@ class PressForwardClient(Client):
         iface.prevent_simulation_finish()
         t = iface.get_simulation_state().race_time
 
-        self.log(f"[{self.client_name}] Reached checkpoint {current}/{target} at time = {t}")
+        self.log(f"Reached checkpoint {current}/{target} at time = {t}")
         self.max_iter_length += self.extra_time
         iface.set_simulation_time_limit(self.max_iter_length)
         
         if current == target and t < self.best_time:
-            self.log(f"[{self.client_name}] New best finish time: {t} (previous best: {self.best_time})")
+            self.log(f"New best finish time: {t} (previous best: {self.best_time})")
             self.best_time = t
 
     def next_input_sequence(self, iface: TMInterface):
@@ -125,7 +125,7 @@ class PressForwardClient(Client):
         events.add(self.iter_start_time, BINARY_ACCELERATE_NAME, True)
         iface.set_event_buffer(events)
 
-        self.log(f"[{self.client_name}] Next input sequence:")
+        self.log(f"Next input sequence:")
         self.log(events.to_commands_str())
 
     def next_iter(self, iface: TMInterface):
