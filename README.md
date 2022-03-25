@@ -21,6 +21,5 @@ Parameters specific to LowInputClient:
 
 Parameters specific to PressForwardClient:
 
-Parameters:
 - `start_time`: waiting time (ms) of the first iteration
 - `max_length`: max race time (excluding waiting time) before giving up and starting the next iteration
