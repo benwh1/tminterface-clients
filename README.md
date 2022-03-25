@@ -14,7 +14,7 @@ Parameters specific to LowInputClient:
 
 - `initial_inputs`: inputs that are unchanged every iteration
 - `start_iter`: which input iteration do we start from? Does nothing if `random` is true.
-- `max_length`: max race time before giving up and starting the next iteration
+- `max_length`: max time allowed to reach the first goal/checkpoint before giving up and starting the next iteration
 - `random`: try inputs randomly, or search all combinations?
 
 ## PressForwardClient
@@ -22,4 +22,4 @@ Parameters specific to LowInputClient:
 Parameters specific to PressForwardClient:
 
 - `start_time`: waiting time (ms) of the first iteration
-- `max_length`: max race time (excluding waiting time) before giving up and starting the next iteration
+- `max_length`: max time (excluding waiting time) allowed to reach the first goal/checkpoint before giving up and starting the next iteration
