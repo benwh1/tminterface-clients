@@ -115,7 +115,7 @@ class LowInputClient(Client):
 
         self.initial_events = events
         self.iter = self.start_iter
-        self.goals_achieved = [False] * len(self.goals)
+        self.goals_reached = [False] * len(self.goals)
         self.best_time = 10**10
         self.max_iter_length = self.max_length
         self.doing_start = True
@@ -134,9 +134,9 @@ class LowInputClient(Client):
             state = iface.get_simulation_state()
 
             for (i, g) in enumerate(self.goals):
-                if g(state) and not self.goals[i]:
+                if g(state) and not self.goals_reached[i]:
                     self.log(f"Reached goal {i+1} at time = {t}")
-                    self.goals[i] = True
+                    self.goals_reached[i] = True
                     self.max_iter_length += self.extra_time
                     iface.set_simulation_time_limit(self.max_iter_length)
 
