@@ -5,7 +5,7 @@ import sys
 
 from tminterface.interface import TMInterface
 from tminterface.client import Client
-from tminterface.constants import ANALOG_STEER_NAME
+from tminterface.constants import ANALOG_STEER_NAME, BINARY_ACCELERATE_NAME
 
 def _flatten(data):
     if isinstance(data, tuple):
@@ -102,6 +102,7 @@ class LowInputClient(Client):
 
         events = iface.get_event_buffer()
         events.clear()
+        events.add(0, BINARY_ACCELERATE_NAME, True)
         for (time, input_type, value) in self.initial_inputs:
             events.add(time, input_type, value)
         iface.set_event_buffer(events)
