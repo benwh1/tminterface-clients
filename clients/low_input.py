@@ -75,7 +75,7 @@ class LowInputClient(Client):
         else:
             self.client_name = "LowInputClient"
 
-        self.earliest_input_time = min(inputs, key=lambda x: x["time"][0])
+        self.earliest_input_time = min([x["time"].start for x in inputs])
 
         logger = logging.getLogger(self.client_name)
 
