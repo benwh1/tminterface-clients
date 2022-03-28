@@ -55,7 +55,7 @@ class PressForwardClient(Client):
         logger = logging.getLogger(self.client_name)
         
         file_handler = logging.FileHandler(filename=f"{self.client_name}.txt")
-        file_formatter = logging.Formatter("[%(levelname)s][%(asctime)s][%(filename)s, %(funcName)s, %(lineno)d][{self.client_name}] %(message)s")
+        file_formatter = logging.Formatter(f"[%(levelname)s][%(asctime)s][%(filename)s, %(funcName)s, %(lineno)d][{self.client_name}] %(message)s")
         file_handler.setFormatter(file_formatter)
         
         stdout_handler = logging.StreamHandler(sys.stdout)
