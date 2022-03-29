@@ -113,6 +113,8 @@ class LowInputClient(Client):
                 self.input_iter = itertools.product(self.input_iter, i["steer"], i["time"])
             for i in range(self.start_iter):
                 next(self.input_iter)
+            for i in range(self.client_num):
+                next(self.input_iter)
 
         self.initial_events = events
         self.iter = self.start_iter
