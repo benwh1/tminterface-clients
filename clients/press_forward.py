@@ -50,7 +50,7 @@ class PressForwardClient(Client):
         if "client_name" in kwargs:
             self.client_name = kwargs["client_name"]
         else:
-            self.client_name = "PressForwardClient"
+            self.client_name = f"PressForwardClient{self.client_num}"
 
         logger = logging.getLogger(self.client_name)
         

@@ -73,7 +73,7 @@ class LowInputClient(Client):
         if "client_name" in kwargs:
             self.client_name = kwargs["client_name"]
         else:
-            self.client_name = "LowInputClient"
+            self.client_name = f"LowInputClient{self.client_num}"
 
         self.earliest_input_time = min([x["time"].start for x in inputs])
 
