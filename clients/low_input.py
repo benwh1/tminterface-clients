@@ -28,7 +28,7 @@ class LowInputClient(Client):
         if "start_iter" in kwargs:
             self.start_iter = kwargs["start_iter"]
         else:
-            self.start_iter = []
+            self.start_iter = 0
 
         if "max_length" in kwargs:
             self.max_length = kwargs["max_length"]
