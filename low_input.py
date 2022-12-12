@@ -29,11 +29,6 @@ class LowInputClient(Client):
         else:
             self.time_first = False
 
-        if "start_iter" in kwargs:
-            self.start_iter = kwargs["start_iter"]
-        else:
-            self.start_iter = 0
-
         if "max_length" in kwargs:
             self.max_length = kwargs["max_length"]
         else:
@@ -125,11 +120,11 @@ class LowInputClient(Client):
                     self.input_iter = itertools.product(self.input_iter, i["value"], i["time"])
                 else:
                     self.input_iter = itertools.product(self.input_iter, i["time"], i["value"])
-            for i in range(self.client_num + self.start_iter * self.num_clients):
+            for i in range(self.client_num):
                 next(self.input_iter)
 
         # initialise things
-        self.iter = self.start_iter
+        self.iter = 0
         self.best_time = 10**10
         self.min_waiting_time = min(self.waiting_time)
         self.start_state = None
