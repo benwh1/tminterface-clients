@@ -67,7 +67,7 @@ class LowInputClient(Client):
         if "check_frequency" in kwargs:
             self.check_frequency = kwargs["check_frequency"]
         else:
-            self.check_frequency = 100
+            self.check_frequency = 500
 
         if "ordered_goals" in kwargs:
             self.ordered_goals = kwargs["check_frequency"]
