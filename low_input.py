@@ -135,7 +135,7 @@ class LowInputClient(Client):
     def on_simulation_step(self, iface: TMInterface, t: int):
         if len(self.waiting_time) == 1:
             # no waiting time changes, we will never have to rewind back to before the first input
-            next_start_state_time = self.min_waiting_time + self.earliest_input_time - 20
+            next_start_state_time = self.min_waiting_time + self.earliest_nonconstant_input_time - 20
         else:
             # we will eventually have to rewind to before the first input, so we have to make start_state
             # earlier than this point
